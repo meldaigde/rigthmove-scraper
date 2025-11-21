@@ -164,3 +164,30 @@ def resolve(
 
     except Exception as e:
         return JSONResponse(status_code=500, content={"ok": False, "error": str(e)})
+        # -------------------------------
+# 5) /address-endpoint (for Michael D'rew)
+# -------------------------------
+@app.get("/address-endpoint")
+def address_endpoint(
+    address: str = Query(..., description="Full address string from the Excel sheet")
+):
+    """
+    Simple endpoint required for Michael D'rew:
+    - Takes a full address string (same format as Excel 'Address' column)
+    - For now, only returns the cleaned address to confirm the endpoint works
+    """
+    cleaned = address.strip()
+
+    if not cleaned:
+        return JSONResponse(status_code=400, content={"ok": False, "error": "Address cannot be empty."})
+
+    return JSONResponse(
+        status_code=200,
+        content={
+            "ok": True,
+            "input": {"address": cleaned},
+            "message": "Endpoint received the address successfully."
+        }
+    )
+
+
